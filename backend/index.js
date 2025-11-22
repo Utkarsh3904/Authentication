@@ -1,14 +1,16 @@
 import express from 'express'  
 import dotenv from 'dotenv'
-dotenv.config()
+import connectDB from './config.js/db.js';           //.js is necessary
+dotenv.config()                                      //remember this
 
 let app = express();
 let port = process.env.PORT || 4000
 
 app.get("/", (req,res)=>{
-    res.send("hello ")
+    res.send("hellovr ")
 })
 
-app.listen(port, ()=>{                                    //pass the port
-    console.log(`Server is started at ${port}`)
+app.listen(port, ()=>{          
+    connectDB()                                         // here pass the the DBconnect fn        
+    console.log(`Server is started at ${port}`)       //pass the port
 })
