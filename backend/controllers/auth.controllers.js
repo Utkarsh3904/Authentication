@@ -56,6 +56,52 @@ export const signUp = async (req,res)=>{
     } catch (error) {
         return res.status(500).json({message:"internal server error"})
     }   
+}
 
+export const login =async (req,res)=>{
+    try {
+    const {email,password} = req.body
+    const existingUser = await User.findOne({email})
+ 
+    if(!existingUser){
+        return res.status(400).json({message: "User Not Found"})
+    }
+    let match = await bcrypt.compare(password, existingUser.password)
+    if(!match){
+        return res.status(400).json({message: "Incorrect Password"})
+    }
 
+     let token = generateToken(existingUser._id);
+
+        // parsing of token in cookie
+        res.cookie("token", token,
+            { httpOnly: true,
+            secure: process.env.NODE_ENV === "production", //for security when proj done in .env it changes to production then this securtiy thing will work
+            sameSite : "strict",
+            maxAge : 7*24*60*60*1000 
+        });
+
+    return res.status(201).json({
+            user: {
+                firstName: existingUser.firstName,
+                lastName: existingUser.lastName,
+                email: existingUser.email,
+                userName: existingUser.userName
+            },
+            
+        })
+
+    } catch (error) {
+        return res.status(500).json({message:"internal server catch error"})
+    }
+}
+
+// remove that 7d time of cookiefor logout (clear cookie)
+export const logout = async (req,res) =>{
+    try {
+        res.clearCookie("token")   //in " "
+        return res.status(200).json({message:"logout successfully"})
+    } catch (error) {
+        return res.status(500).json({message:"internal server catch error logout fail"})
+    }
 }

@@ -1,5 +1,5 @@
 import express, { Router } from 'express'    //import express
-import { signUp } from '../controllers/auth.controllers.js';
+import { login, logout, signUp } from '../controllers/auth.controllers.js';
 
 
 
@@ -7,6 +7,8 @@ const authRouter = Router();  //need only Router fn
 
 
 authRouter.post("/signUp", signUp )
+authRouter.post("/login", login )
+authRouter.post("/logout", logout)
 
 
 
