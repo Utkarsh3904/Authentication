@@ -6,7 +6,8 @@ import { login, logout, signUp } from '../controllers/auth.controllers.js';
 const authRouter = Router();  //need only Router fn
 
 
-authRouter.post("/signUp", signUp )
+// Use lowercase '/signup' so it matches the frontend POST path (/api/signup)
+authRouter.post("/signup", signUp )
 authRouter.post("/login", login )
 authRouter.post("/logout", logout)
 
