@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import dp from '../assets/dp.webp'
 import { useContext } from 'react';
 import { dataContext } from '../context/UserContext';
@@ -15,6 +15,7 @@ function SignUp () {
     let [email, setEmail] = useState(null) 
     let [password, setPassword] = useState(null) 
     let [error, setError] = useState(null) 
+    let file=useRef(null)
 
 
     const handleSignUp = async (e) => {
@@ -29,6 +30,17 @@ function SignUp () {
         console.log(error.message);
       }
     }
+
+    let [frontendImage, setFrontendImage] = useState(dp)
+    let [backendImage, setBackendImage] = useState(null)
+    function handleImage (e){
+      // console.log(e);
+      let file = e.target.files[0];
+      setBackendImage(file);
+      let image = URL.createObjectURL(file);
+      setFrontendImage(image) 
+      
+    }
   
   return (
     <div className="w-full h-[100vh] bg-gradient-to-br from-gray-900 via-gray-800 to-black flex justify-center items-center">
@@ -38,12 +50,19 @@ function SignUp () {
           autoComplete="off"
           onSubmit={handleSignUp}
         >
+          {/* for to change image */}
+          <input type="file" hidden ref={file} onChange={handleImage}/>
+        
+          <h1 className='text-white font-bold text-3 xl flex justify-center'>Let's create an account</h1>
             <div className="flex justify-center w-full">
               <div className='flex justify-center items-center relative w-[100px] h-[100px] rounded-full bg-white overflow-hidden border-2 border-gray-800'>
-                  <img src={dp} alt="" className='w-[100%] h-[100%]' />
-                  <div className='absolute w-[100%] h-[100%] bg-black top-0 opacity-0 hover:opacity-50 cursor-pointer flex justify-center items-center text-white font-bold text-[50px] '>+</div>
+                  <img src={frontendImage} alt="" className='w-[100%] h-[100%]' />
+                  <div className='absolute w-[100%] h-[100%] bg-black top-0 opacity-0 hover:opacity-50 cursor-pointer flex justify-center items-center text-white font-bold text-[50px] ' 
+                  onClick={()=>{file.current.click()}}>
+                    +</div>
               </div>
             </div>
+
         
           <div className="flex flex-col sm:flex-row gap-4 w-full">
             <input
