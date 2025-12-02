@@ -11,11 +11,13 @@ let port = process.env.PORT || 4000
 
 app.use(express.json())                 //MIDDLEWARE for server to client handle api by converting them into json
 app.use(cookieParser())                 //MIDDLEWARE used to store token in cookie
-app.use("/api", authRouter)            // MIDDLEWARE use authRouter in this
+// Configure CORS before routes so preflight requests are handled correctly
 app.use(cors({
     origin:"http://localhost:5173",      //frontend url
     credentials:true
 }))
+
+app.use("/api", authRouter)            // MIDDLEWARE use authRouter in this
 
 
 app.listen(port, ()=>{          
