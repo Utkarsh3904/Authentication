@@ -4,7 +4,7 @@ import { createContext } from 'react'
 export const dataContext = createContext()
 
 function UserContext({children}) {
-    const serverUrl ="https://localhost:8000"
+    const serverUrl ="http://localhost:8000"
     const value={
       serverUrl
     }
