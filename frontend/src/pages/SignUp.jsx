@@ -21,9 +21,21 @@ function SignUp () {
     const handleSignUp = async (e) => {
       e.preventDefault()
       try {
-        let data = await axios.post(serverUrl + '/api/signup',{
-            firstName, lastName, userName, email, password
-        },{withCredentials:true})  //needed else cookies will not parse
+        let formdata = new FormData()         // Formdata is used to send data into backend
+        formdata.append("firstName", firstName)
+        formdata.append("lastName", lastName)
+        formdata.append("userName", userName)
+        formdata.append("eamil", email)
+        formdata.append("password", password)
+        if(backendImage){
+          formdata.append("profileimage" , backendImage)
+        }
+
+        let data = await axios.post(serverUrl + '/api/signup', 
+        formdata,
+        {withCredentials:true ,                                     //needed else cookies will not parse 
+          headers : {"Content-Type" : "multipart/form-data"}        //its a metadata so the bakend will handle it as formdata  
+        }) 
         console.log(data);
         
       } catch (error) {
