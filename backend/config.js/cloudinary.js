@@ -1,11 +1,13 @@
 import {v2 as cloudinary } from "cloudinary"
-import { log } from "console";
+import dotenv from "dotenv"
 import fs from "fs"   //for to delete the stored file ie for frontend as the data get stored in backend
 //all this is used to store images n videos in backend do this after making signup n login page
 
+dotenv.config()
+
 cloudinary.config({
-    cloud_name: process.env.CLOUNDINARY_CLOUD_NAME, 
-    api_key: process.env.CLOUNDINARY_API_KEY, 
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
     api_secret: process.env.CLOUDINARY_API_SECRET
 })
 
@@ -16,16 +18,18 @@ const uploadOnCloudinary = async (filepath)=>{
         if(!filepath){  //agr user ne file upload hi nhi kri
             return null;
         }
-        let result = cloudinary.uploader.upload(filepath)
+        let result = await cloudinary.uploader.upload(filepath)
         console.log(result);                             //to see whats the outcome
         fs.unlinkSync(filepath)              //delete that file
         return result.secure_url                         //cloudinary return a url
         
     } catch (error) {
-        fs.unlinkSync(filepath)
-        console.log(error);
-        
+    if (fs.existsSync(filepath)) {
+        try { fs.unlinkSync(filepath) } catch (e) { /* ignore */ }
     }
+    console.error('Cloudinary upload error:', error);
+    return null;
+}
 }
 
 export default uploadOnCloudinary
