@@ -22,13 +22,14 @@ function SignUp () {
       e.preventDefault()
       try {
         let formdata = new FormData()         // Formdata is used to send data into backend
-        formdata.append("firstName", firstName)
-        formdata.append("lastName", lastName)
-        formdata.append("userName", userName)
-        formdata.append("eamil", email)
-        formdata.append("password", password)
+        formdata.append("firstName", firstName || '')
+        formdata.append("lastName", lastName || '')
+        formdata.append("userName", userName || '')
+        formdata.append("email", email || '')
+        formdata.append("password", password || '')
         if(backendImage){
-          formdata.append("profileimage" , backendImage)
+          // name must match the server-side multer field name: 'profileImage'
+          formdata.append("profileImage" , backendImage)
         }
 
         let data = await axios.post(serverUrl + '/api/signup', 

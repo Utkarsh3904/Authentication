@@ -2,6 +2,7 @@
 import generateToken from "../config.js/token.js";
 import User from "../models/user.model.js";          //use in the search/find
 import bcrypt from "bcrypt";
+import uploadOnCloudinary from "../config.js/cloudinary.js"
 
 export const signUp = async (req,res)=>{
     try {
@@ -14,7 +15,14 @@ export const signUp = async (req,res)=>{
         }
 
         //this is added for the photo uplaod added at the last
-        console.log(req.file);
+          let profileImage = null;
+          if(req.file){
+              console.log("File received:", req.file);
+              profileImage = await uploadOnCloudinary(req.file.path)   // calling it will return a URL
+              console.log("Profile image URL:", profileImage);
+          } else {
+              console.log("No file received in request");
+          }
         
         
 
@@ -30,13 +38,22 @@ export const signUp = async (req,res)=>{
         //now HASH byusing bcrypt.js  //INSTALL IT after make its func then CREATE a user
         const hashedPassword = await bcrypt.hash(password, 10)  //bcrypt fn 10 is number of random char it will attach in password
 
-        const user = await User.create({
+           // Build user object conditionally
+           const userData = {
             firstName,
              lastName,
              email,
              password:hashedPassword,
              userName
-        })
+        }
+        
+        // Only add profileImage if it exists
+        if(profileImage) {
+            userData.profileImage = profileImage;
+        }
+
+        const user = await User.create(userData)
+        console.log("User created:", user);
  //install i jsonwebtoken n cookie-parser
  //token create n pass it into cokkie : as token chks/verfies a user that it is authenticated(logged in or logged out) or not 
          let token = generateToken(user._id);
@@ -54,13 +71,15 @@ export const signUp = async (req,res)=>{
                 firstName,
                 lastName,
                 email,
-                userName
+                userName,
+                profileImage
             },
             
         })
 
     } catch (error) {
-        return res.status(500).json({message:"internal server error"})
+        console.error("SignUp error:", error);
+        return res.status(500).json({message:"internal server error", error: error.message})
     }   
 }
 
