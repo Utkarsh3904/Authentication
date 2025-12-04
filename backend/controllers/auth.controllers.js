@@ -12,6 +12,12 @@ export const signUp = async (req,res)=>{
             return res.status(400).json({message:"All fields are required"})
 
         }
+
+        //this is added for the photo uplaod added at the last
+        console.log(req.file);
+        
+        
+
         //second step is password hash, but first check(with help of email or username as they are unique) did the user exist previously or not.
         let existUser = await User.findOne({email})  
         if(existUser) {
