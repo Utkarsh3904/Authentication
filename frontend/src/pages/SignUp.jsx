@@ -31,8 +31,11 @@ function SignUp () {
       }
     }
 
+
+    //image upload-multer used to store an image for the backend
     let [frontendImage, setFrontendImage] = useState(dp)
     let [backendImage, setBackendImage] = useState(null)
+
     function handleImage (e){
       // console.log(e);
       let file = e.target.files[0];
