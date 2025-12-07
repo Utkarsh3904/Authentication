@@ -7,7 +7,7 @@ import axios from "axios"
 
 function SignUp () {
     const navigate = useNavigate();
-    let {serverUrl} = useContext(dataContext)
+    let {serverUrl, userData, setUserData} = useContext(dataContext)
 
     let [firstName, setFirstName] = useState(null) 
     let [lastName, setLastName] = useState(null) 
