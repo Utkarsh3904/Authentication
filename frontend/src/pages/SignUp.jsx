@@ -38,8 +38,9 @@ function SignUp () {
           headers : {"Content-Type" : "multipart/form-data"}        //its a metadata so the bakend will handle it as formdata  
         }) 
         await getUserdata()
-        setUserData(data);
-
+        setUserData(data.user);
+        navigate("/")
+ 
       } catch (error) {
         console.log(error.message);
       }
@@ -70,7 +71,7 @@ function SignUp () {
           {/* for to change image */}
           <input type="file" hidden ref={file} onChange={handleImage}/>
         
-          <h1 className='text-white font-bold text-3 xl flex justify-center'>Let's create an account</h1>
+            <h1 className='text-white font-bold text-3 xl flex justify-center'>Let's create an account</h1>
             <div className="flex justify-center w-full">
               <div className='flex justify-center items-center relative w-[100px] h-[100px] rounded-full bg-white overflow-hidden border-2 border-gray-800'>
                   <img src={frontendImage} alt="" className='w-[100%] h-[100%]' />

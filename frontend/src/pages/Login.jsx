@@ -19,8 +19,13 @@ const Login = () => {
         let {data} = await axios.post(serverUrl + '/api/login',{
              email, password
         },{withCredentials:true})  //needed else cookies will not parse
+        
+        setUserData(data.user)
         await getUserdata()
-        setUserData(data)
+        
+         if(userData){
+          navigate("/")
+         }
         
       } catch (error) {
         alert(error.response.data.message)
