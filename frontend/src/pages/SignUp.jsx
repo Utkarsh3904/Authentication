@@ -7,7 +7,7 @@ import axios from "axios"
 
 function SignUp () {
     const navigate = useNavigate();
-    let {serverUrl, userData, setUserData} = useContext(dataContext)
+    let {serverUrl, userData, setUserData, getUserdata} = useContext(dataContext)
 
     let [firstName, setFirstName] = useState(null) 
     let [lastName, setLastName] = useState(null) 
@@ -32,13 +32,14 @@ function SignUp () {
           formdata.append("profileImage" , backendImage)
         }
 
-        let data = await axios.post(serverUrl + '/api/signup', 
+        let {data} = await axios.post(serverUrl + '/api/signup', 
         formdata,
         {withCredentials:true ,                                     //needed else cookies will not parse 
           headers : {"Content-Type" : "multipart/form-data"}        //its a metadata so the bakend will handle it as formdata  
         }) 
-        console.log(data);
-        
+        await getUserdata()
+        setUserData(data);
+
       } catch (error) {
         console.log(error.message);
       }

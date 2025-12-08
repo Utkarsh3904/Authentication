@@ -7,8 +7,7 @@ import axios from 'axios';
 
 const Login = () => {    
    const navigate = useNavigate();
-    let {serverUrl} = useContext(dataContext)
-
+    let {serverUrl, userData, setUserData, getUserdata} = useContext(dataContext)
     
     let [email, setEmail] = useState(null) 
     let [password, setPassword] = useState(null) 
@@ -17,10 +16,11 @@ const Login = () => {
     const handleLogin = async (e)=>{
         e.preventDefault()
         try {
-        let data = await axios.post(serverUrl + '/api/login',{
+        let {data} = await axios.post(serverUrl + '/api/login',{
              email, password
         },{withCredentials:true})  //needed else cookies will not parse
-        console.log(data);
+        await getUserdata()
+        setUserData(data)
         
       } catch (error) {
         alert(error.response.data.message)

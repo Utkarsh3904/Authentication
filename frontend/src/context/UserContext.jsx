@@ -5,7 +5,7 @@ export const dataContext = createContext()
 
 function UserContext({children}) {
 
-  let [userData, setUserData] = useState(null)
+  let [userData, setUserData] = useState({})
 
     const serverUrl ="http://localhost:8000"
 
@@ -21,7 +21,7 @@ function UserContext({children}) {
     }
 
     const value={
-      serverUrl,userData, setUserData
+      serverUrl,userData, setUserData, getUserdata
     }
 
     useEffect(()=>{

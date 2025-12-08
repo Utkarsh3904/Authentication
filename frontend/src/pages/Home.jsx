@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { dataContext } from '../context/UserContext'
 
 function home() {

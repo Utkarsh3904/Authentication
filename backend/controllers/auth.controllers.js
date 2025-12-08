@@ -111,7 +111,8 @@ export const login =async (req,res)=>{
                 firstName: existingUser.firstName,
                 lastName: existingUser.lastName,
                 email: existingUser.email,
-                userName: existingUser.userName
+                userName: existingUser.userName,
+                profileImage: existingUser.profileImage
             },
             
         })
@@ -141,7 +142,7 @@ export const getUserData = async (req,res )=>{
         if(!userId){
             return res.status(400).json({message:"user id is not found"}) 
         }
-        let user = await User.findById({userId})
+        let user = await User.findById(userId)
         if(!user){
             return res.status(400).json({message:"user id is not found"})  
         }
